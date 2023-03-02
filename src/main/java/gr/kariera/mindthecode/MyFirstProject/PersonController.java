@@ -1,5 +1,8 @@
 package gr.kariera.mindthecode.MyFirstProject;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -35,8 +38,20 @@ public class PersonController {
     }
 
     @GetMapping("/persons")
-    public List<Person> all() {
-        return repo.findAll();
+    public Page<Person> all(
+            @RequestParam(required = false) String lastName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+    ) {
+        PageRequest paging = PageRequest.of(page, size);
+        Page<Person> res;
+        if (lastName == null) {
+            res = repo.findAll(paging);
+        } else {
+            res = repo.findByLastNameContainingIgnoreCase(lastName, paging);
+        }
+
+        return res;
     }
 
     @DeleteMapping("/persons/{id}")
