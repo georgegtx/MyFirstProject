@@ -3,6 +3,7 @@ package gr.kariera.mindthecode.MyFirstProject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -41,9 +42,16 @@ public class PersonController {
     public Page<Person> all(
             @RequestParam(required = false) String lastName,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "ASC", required = false) String sort
     ) {
-        PageRequest paging = PageRequest.of(page, size);
+
+        PageRequest paging = PageRequest
+                .of(page, size)
+                .withSort(sort.equalsIgnoreCase("ASC") ?
+                        Sort.by("lastName").ascending() :
+                        Sort.by("lastName").descending());
+
         Page<Person> res;
         if (lastName == null) {
             res = repo.findAll(paging);

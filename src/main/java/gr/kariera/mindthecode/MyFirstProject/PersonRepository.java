@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 interface PersonRepository extends JpaRepository<Person, Integer> {
-    Page<Person> findByLike(String lastName, Pageable pageable);
+    Page<Person> findByLastName(String lastName, Pageable pageable);
     Page<Person> findByLastNameContaining(String lastName, Pageable pageable);
     Page<Person> findByLastNameIgnoreCase(String lastName, Pageable pageable);
 
