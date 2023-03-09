@@ -7,11 +7,21 @@ import java.util.Collection;
 public class NewOrderDto implements Serializable {
     private String address;
 
+    public Double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    private Double discountPercentage;
+    private Collection<ProductWithQuantityDto> products;
+
     public NewOrderDto() {
         this.products = new ArrayList<>();
     }
 
-    private Collection<ProductWithQuantityDto> products;
 
     public String getAddress() {
         return address;

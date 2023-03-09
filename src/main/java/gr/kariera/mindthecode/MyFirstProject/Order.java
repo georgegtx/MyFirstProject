@@ -2,13 +2,16 @@ package gr.kariera.mindthecode.MyFirstProject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.kariera.mindthecode.MyFirstProject.DTOs.ProductWithQuantityDto;
+import gr.kariera.mindthecode.MyFirstProject.DTOs.ProductWithQuantityExtendedDto;
 import jakarta.persistence.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity(name = "orders")
@@ -51,6 +54,7 @@ public class Order {
         this.address = address;
     }
 
+
     public Collection<OrderProduct> getOrderProducts() {
         return orderProducts;
     }
@@ -71,14 +75,45 @@ public class Order {
         return orderProducts
                 .stream()
                 .map(op -> {
-                    ProductWithQuantityDto pwq = new ProductWithQuantityDto();
+                    ProductWithQuantityExtendedDto pwq = new ProductWithQuantityExtendedDto();
                     pwq.setProductId(op.getProduct().getId());
                     pwq.setQuantity(op.getQuantity());
+                    pwq.setDescription(op.getProduct().getDescription());
+                    pwq.setPrice(op.getProduct().getPrice());
                     return pwq;
                 })
                 .collect(Collectors.toList());
     }
 
+    @Transient
+    private BigDecimal totalCost;
+
+    public BigDecimal getTotalCost() {
+        BigDecimal total = orderProducts
+                .stream()
+                .map(op -> {
+                    return op.getProduct().getPrice()
+                            .multiply(
+                                    BigDecimal.valueOf(
+                                            op.getQuantity()
+                                    )
+                            );
+                })
+                .reduce((acc, cur) -> acc.add(cur))
+                .orElseThrow();
+
+        return total.multiply(BigDecimal.valueOf(1-discountPercentage));
+    }
+
+    public Double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    private Double discountPercentage = 0d;
 
     private String address;
 }

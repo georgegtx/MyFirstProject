@@ -39,6 +39,7 @@ public class OrderController {
     public Order newPerson(@RequestBody NewOrderDto newOrder) {
         Order order = new Order();
         order.setAddress(newOrder.getAddress());
+        order.setDiscountPercentage(newOrder.getDiscountPercentage());
         order = repo.save(order);
 
         final Order finalOrder = order;
