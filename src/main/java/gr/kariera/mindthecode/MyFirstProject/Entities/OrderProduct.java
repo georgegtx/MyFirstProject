@@ -1,4 +1,4 @@
-package gr.kariera.mindthecode.MyFirstProject;
+package gr.kariera.mindthecode.MyFirstProject.Entities;
 
 import jakarta.persistence.*;
 import org.springframework.context.annotation.Lazy;

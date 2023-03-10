@@ -1,4 +1,4 @@
-package gr.kariera.mindthecode.MyFirstProject;
+package gr.kariera.mindthecode.MyFirstProject.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

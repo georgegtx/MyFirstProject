@@ -1,5 +1,7 @@
-package gr.kariera.mindthecode.MyFirstProject;
+package gr.kariera.mindthecode.MyFirstProject.API;
 
+import gr.kariera.mindthecode.MyFirstProject.Entities.Product;
+import gr.kariera.mindthecode.MyFirstProject.Repositories.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -8,11 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
-public class ProductController {
+@RequestMapping(path = "/api")
+public class ProductApiController {
 
     private final ProductRepository repo;
 
-    public ProductController(ProductRepository repo) {
+    public ProductApiController(ProductRepository repo) {
         this.repo = repo;
     }
 

@@ -1,4 +1,4 @@
-package gr.kariera.mindthecode.MyFirstProject;
+package gr.kariera.mindthecode.MyFirstProject.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.kariera.mindthecode.MyFirstProject.DTOs.ProductWithQuantityDto;
@@ -10,8 +10,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity(name = "orders")
