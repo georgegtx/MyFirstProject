@@ -30,6 +30,8 @@ public class PersonController {
             Model model
     ) {
         model.addAttribute("persons", service.getPersons(lastName, page, size, sort));
+        model.addAttribute("sort", sort);
+        model.addAttribute("lastName", lastName);
         return "persons";
     }
 
