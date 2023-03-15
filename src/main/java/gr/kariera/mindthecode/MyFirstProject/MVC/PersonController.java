@@ -1,13 +1,16 @@
 package gr.kariera.mindthecode.MyFirstProject.MVC;
 
 
+import gr.kariera.mindthecode.MyFirstProject.Entities.Person;
 import gr.kariera.mindthecode.MyFirstProject.Services.PersonService;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/persons")
@@ -30,9 +33,31 @@ public class PersonController {
         return "persons";
     }
 
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("person",  new Person());
+        return "create-or-update-person";
+    }
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("person",  service.getById(id));
-        return "update-person";
+        return "create-or-update-person";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, Model model) {
+        service.deletePerson(id);
+        return "redirect:/persons/index";
+    }
+
+    @PostMapping("/create-or-update")
+    public String saveCreateForm(@RequestParam Optional<Integer> id, @ModelAttribute Person person, Model model) {
+        try {
+            service.createOrUpdatePerson(id.isPresent() ? id.get() : null, person);
+        } catch (Exception e) {
+            throw new HttpClientErrorException(HttpStatusCode.valueOf(400), e.getMessage());
+        }
+
+        return "redirect:/persons/index";
     }
 }

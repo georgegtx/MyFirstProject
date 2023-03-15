@@ -20,7 +20,7 @@ public class PersonApiController {
     @PutMapping("/persons/{id}")
     public Person update(@PathVariable Integer id, @RequestBody Person person) {
         try {
-            return service.updatePerson(id, person);
+            return service.createOrUpdatePerson(id, person);
         } catch (Exception e) {
             throw new HttpClientErrorException(HttpStatusCode.valueOf(400), e.getMessage());
         }
@@ -28,7 +28,11 @@ public class PersonApiController {
 
     @PostMapping("/persons")
     public Person newPerson(@RequestBody Person person) {
-        return service.createPerson(person);
+        try {
+            return service.createOrUpdatePerson(person.getId(), person);
+        } catch (Exception e) {
+            throw new HttpClientErrorException(HttpStatusCode.valueOf(400), e.getMessage());
+        }
     }
 
     @GetMapping("/persons/{id}")

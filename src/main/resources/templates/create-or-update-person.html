@@ -47,51 +47,39 @@
 <main class="container">
 
     <div class="row flex-column">
-        <div class="col-3">
-            <form id="new-person" method="get" th:attr="action=@{/persons/create}">
-                <button class="btn btn-primary" type="submit" form="new-person" >New Person</button>
-            </form>
 
+        <div class="col-3" th:each="person: ${persons}">
+            <p th:text="'Hello, ' + ${person.name} + '!'" />
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-5">
-            <span>Name</span>
-        </div>
-        <div class="col-5">
-            <span>Last Name</span>
-        </div>
-        <div class="col-2">
-            <span>Options</span>
-        </div>
-    </div>
+        <form class="needs-validation" novalidate="" method="post" th:attr="action=@{/persons/create-or-update(id=${person.id})}" th:object="${person}">
 
-        <ul class="list-group">
-            <li class="list-group-item" th:each="person: ${persons}">
-                <div class="row">
-                    <div class="col-5">
-                        <a th:text="${person.name}"  />
-                    </div>
+            <div class="row g-3">
 
-                    <div class="col-5">
-                        <a th:text="${person.lastName}" />
-                    </div>
-
-                    <div class="col-2">
-                        <form th:action="@{/persons/edit/{id}(id=${person.id})}" th:method="get" >
-                            <button type="submit" >edit</button>
-                        </form>
-                        <form th:action="@{/persons/delete/{id}(id=${person.id})}" th:method="post" >
-                            <button type="submit">delete</button>
-                        </form>
+                <div class="col-12">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Your first name here ..." required="required">
+                    <div class="invalid-feedback">
+                        Please enter your name.
                     </div>
                 </div>
-            </li>
-        </ul>
 
+                <div class="col-12">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Your last name here ..." required="required">
+                    <div class="invalid-feedback">
+                        Please enter your last name.
+                    </div>
+                </div>
 
+            </div>
 
+            <hr class="my-4">
+
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Save</button>
+        </form>
+
+    </div>
 </main>
 </body>
 </html>

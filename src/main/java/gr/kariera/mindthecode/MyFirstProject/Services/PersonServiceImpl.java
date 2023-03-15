@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -16,14 +18,11 @@ public class PersonServiceImpl implements PersonService {
         this.repo = repo;
     }
     @Override
-    public Person createPerson(Person person) {
-        return repo.save(person);
-    }
-
-    @Override
-    public Person updatePerson(Integer id, Person person) throws Exception {
-        if (!id.equals(person.getId())) {
-            throw new Exception("id in path does not patch id in body");
+    public Person createOrUpdatePerson(Integer id, Person person) throws Exception {
+        if (id != null) {
+            if (!id.equals(person.getId())) {
+                throw new Exception("id in path does not patch id in body");
+            }
         }
         return repo.save(person);
     }
