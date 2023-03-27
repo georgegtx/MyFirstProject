@@ -9,6 +9,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @RequestMapping(path = "/api")
+@CrossOrigin
 public class PersonApiController {
 
     private final PersonService service;
@@ -50,7 +51,7 @@ public class PersonApiController {
         return service.getPersons(lastName, page, size, sort);
     }
 
-    @DeleteMapping("/persons/{id}")
+    @RequestMapping(value = "/persons/{id}", method = { RequestMethod.OPTIONS, RequestMethod.DELETE})
     public void delete(@PathVariable Integer id) {
         service.deletePerson(id);
     }
